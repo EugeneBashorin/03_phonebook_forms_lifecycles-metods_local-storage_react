@@ -51,6 +51,23 @@ export class App extends Component {
     })
 
   }
+  componentDidMount() {
+    const tempContacts = localStorage.getItem("contacts");
+    const parsedContacts = JSON.parse(tempContacts);
+    if(parsedContacts){
+      this.setState({contacts: parsedContacts})
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if(this.state !== prevState){
+      try { 
+        localStorage.setItem("contacts", JSON.stringify(this.state.contacts))
+      } catch (error) {
+        console.log("Something go wrong with set to localStorage: ",error.message)
+      }
+    }
+  }
 
   render (){
     const normalizeFilter = this.state.filter.toLowerCase();
